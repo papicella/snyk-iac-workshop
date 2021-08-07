@@ -31,6 +31,16 @@ _Note: It is assumed your using a mac for these steps but it should also work on
 
 ## Step 2 Configure GitHub Integration
 
+First we need to connect Snyk to GitHub so we can import our Repository. Do so by:
+
+* Login to http://app.snyk.io Sign up if you haven't already.
+* Navigating to Integrations -> Source Control -> GitHub
+* Fill in your Account Credentials to Connect your GitHub Account.
+
+![alt tag](https://i.ibb.co/bPqqybM/snyk-starter-open-source-1.png)
+
+## Step 3 Add project to find vulnerabilities
+
 
 
 Thanks for attending and completing this workshop
