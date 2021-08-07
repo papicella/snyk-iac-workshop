@@ -14,7 +14,6 @@ In this **hands-on** workshop we will achieve the follow
 * Step 6 Test using the Snyk CLI - Kubernetes YAML files
 * Step 7 View Snyk IaC Rules
 
-
 ## Prerequisites
 
 * public GitHub account - http://github.com
@@ -28,6 +27,11 @@ _Note: It is assumed your using a mac for these steps but it should also work on
 
 ## Step 1 Fork a GitHub IaC repository
 
+Navigate to the following GitHub repo - https://github.com/papicella/snyk-iac-workshop.git
+
+* Click on the "**Fork**" button
+* Ensure you are forking this repo to your public GitHub account
+* Click done
 
 ## Step 2 Configure GitHub Integration
 
@@ -42,6 +46,16 @@ First we need to connect Snyk to GitHub so we can import our Repository. Do so b
 ## Step 3 Add project to find vulnerabilities
 
 
+## Step 4 Test using the Snyk CLI - Terraform Files
+
+
+## Step 5 Test using the Snyk CLI - AWS CloudFormation files
+
+
+## Step 6 Test using the Snyk CLI - Kubernetes YAML files
+
+
+## Step 7 View Snyk IaC Rules
 
 Thanks for attending and completing this workshop
 
