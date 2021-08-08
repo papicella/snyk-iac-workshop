@@ -245,11 +245,15 @@ Go ahead and fix others if you have time and optionally commit your changes back
 
 ## Step 5 Test using the Snyk CLI - AWS CloudFormation files
 
+TODO://
 
 ## Step 6 Test using the Snyk CLI - Kubernetes YAML files
 
+TODO://
 
 ## Step 7 View Snyk IaC Rules
+
+TODO://
 
 Thanks for attending and completing this workshop
 
