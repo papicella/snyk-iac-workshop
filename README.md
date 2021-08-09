@@ -45,6 +45,10 @@ First we need to connect Snyk to GitHub so we can import our Repository. Do so b
 
 ## Step 3 Add project to find vulnerabilities
 
+* Before we get started we need to make sure IaC is enabled navigate to "Settings -> Infrastructure as code" and ensure it is enabled as shown below.
+
+![alt tag](https://i.ibb.co/bRLppWW/snyk-iac-7.png)
+
 Now that Snyk is connected to your GitHub Account, import the Repo into Snyk as a Project.
 
 * Navigate to Projects 
