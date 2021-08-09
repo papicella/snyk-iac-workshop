@@ -10,9 +10,9 @@ In this **hands-on** workshop we will achieve the follow:
 * [Step 2 Configure GitHub Integration](#step-2-configure-github-integration) 
 * [Step 3 Add project to find vulnerabilities](#step-3-add-project-to-find-vulnerabilities)
 * [Step 4 Test using the Snyk CLI - Terraform Files](#step-4-test-using-the-snyk-cli---terraform-files)
-* [Step 5 Test using the Snyk CLI - AWS CloudFormation files]()
-* [Step 6 Test using the Snyk CLI - Kubernetes YAML files]()
-* [Step 7 View Snyk IaC Rules]()
+* [Step 5 Test using the Snyk CLI - AWS CloudFormation files](#step-5-test-using-the-snyk-cli---aws-cloudformation-files)
+* [Step 6 Test using the Snyk CLI - Kubernetes YAML files](#step-6-test-using-the-snyk-cli---kubernetes-yaml-files)
+* [Step 7 View Snyk IaC Rules](#step-7-view-snyk-iac-rules)
 
 ## Prerequisites
 
@@ -27,7 +27,7 @@ _Note: It is assumed your using a mac for these steps but it should also work on
 
 ## Step 1 Fork a GitHub IaC repository
 
-Navigate to the following GitHub repo - https://github.com/papicella/snyk-iac-workshop.git
+Navigate to the following GitHub repo - https://github.com/papicella/snyk-iac-workshop
 
 * Click on the "**Fork**" button
 * Ensure you are forking this repo to your public GitHub account
@@ -53,7 +53,7 @@ Now that Snyk is connected to your GitHub Account, import the Repo into Snyk as 
 
 * Navigate to Projects 
 * Click "**Add Project**" then select "**GitHub**"
-* Click on the Repo you forked "snyk-iac-workshop"
+* Click on the Repo you forked "**snyk-iac-workshop**"
 
 ![alt tag](https://i.ibb.co/pWJW1VK/snyk-iac-1.png)
 
@@ -65,9 +65,9 @@ __Note: Once complete you should see various IaC scans as shown below_
 
 ![alt tag](https://i.ibb.co/DKY911V/snyk-iac-3.png)
 
-For each Vulnerability, Snyk displays the following ordered by our Line no :
+For each Vulnerability, Snyk displays the following ordered by our Line no:
 
-1. Each Vulnerability grouped by line no. and severity 
+1. Each Vulnerability grouped by line no and severity 
 1. Each Vulnerability links to the Snyk policy it was defined against including the path to the issue, what the issue is, the impact and how to resolve it
 1. The ability to ignore issues you wish to remove from the list
 
@@ -821,6 +821,8 @@ Project path:      ./Kubernetes/employee-K8s.yaml
 
 Tested employee-K8s.yaml for known issues, found 8 issues
 ```
+
+Go ahead and fix others if you have time and optionally commit your changes back to the GitHub repo if you like.
 
 * To output the test format as JSON issue a command as follows. This provides more detailed information including links to issue references as well as the ability to upload the data into other system for reporting purposes.
 
