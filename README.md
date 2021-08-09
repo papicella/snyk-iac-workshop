@@ -818,6 +818,12 @@ Project path:      ./Kubernetes/employee-K8s.yaml
 Tested employee-K8s.yaml for known issues, found 8 issues
 ```
 
+* To output the test format as JSON issue a command as follows. This provides more detailed information including links to issue references as well as the ability to upload the data into other system for reporting purposes.
+
+```bash
+$ snyk iac test ./Kubernetes/employee-K8s.yaml --json
+```
+
 ## Step 7 View Snyk IaC Rules
 
 Snyk IaC has a comprehensive set of security rules across AWS, Azure, GCP & Kubernetes with support for Terraform, Kubernetes, and Helm configuration formats. The details of these issues, their impact, and how to fix them are all built-in to Snyk IaC, so developers get feedback directly in their own tools. For reference, we have also documented the security rules that we support for each provider below, along with relevant benchmarks and authoritative third-party references
