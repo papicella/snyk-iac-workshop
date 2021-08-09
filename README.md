@@ -566,6 +566,22 @@ $ snyk iac test ./terraform/big_data.tf --json
 }
 ```
 
+* With Snyk Infrastructure as Code, you can scan both your static configuration files and Terraform Plan output using the CLI
+
+[Test your Terraform files with our CLI tool](https://support.snyk.io/hc/en-us/articles/360013723877-Test-your-Terraform-files-with-our-CLI-tool)
+
+Terraform Plan is the step run between writing your configuration files and deploying those changes.
+
+$ terraform plan identifies the changes that need to be made to your target environment in order to match your desired state.
+
+As part of this planning stage, all variables and Terraform Modules that are used in your targeted terraform deployment are taken into consideration.
+
+If you have written a custom terraform module and are referencing it in your deployment, then it will be included in the terraform plan output and scanned accordingly.
+
+This means the Terraform plan output provides a complete artefact to be scanned from a security perspective. 
+
+![alt tag](https://i.ibb.co/gDLFYcH/snyk-iac-6.png)
+
 ## Step 5 Test using the Snyk CLI - AWS CloudFormation files
 
 Snyk tests and monitors CloudFormation files from source code repositories. It gives advice on how to better secure cloud environments by catching misconfigurations before they are pushed to production along with assistance on how best to fix them
@@ -684,10 +700,129 @@ For more information on AWS Cloud Formation scanning with Snyk see the following
 
 Snyk tests and monitors Kubernetes configurations stored in your source code repositories and provides information, tips, and tricks to better secure a Kubernetes environment--catching misconfigurations before they are pushed to production as well as providing fixes for vulnerabilities
 
+Snyk Infrastructure as Code for Kubernetes supports:
+
+1. Deployments, Pods and Services.
+1. CronJobs, Jobs, StatefulSet, ReplicaSet, DaemonSet, and ReplicationController
+1. Helm Charts
+
+* Let's scan our Kubernetes YAML file which is just a basic K8s deployment as shown below
+
+```bash
+$ snyk iac test ./Kubernetes/employee-K8s.yaml
+
+Testing employee-K8s.yaml...
+
+
+Infrastructure as code issues:
+  ✗ Container is running without privilege escalation control [Medium Severity] [SNYK-CC-K8S-9] in Deployment
+    introduced by input > spec > template > spec > containers[snyk-employee-api] > securityContext > allowPrivilegeEscalation
+
+  ✗ Container is running without root user control [Medium Severity] [SNYK-CC-K8S-10] in Deployment
+    introduced by input > spec > template > spec > containers[snyk-employee-api] > securityContext > runAsNonRoot
+
+  ✗ Container does not drop all default capabilities [Medium Severity] [SNYK-CC-K8S-6] in Deployment
+    introduced by input > spec > template > spec > containers[snyk-employee-api] > securityContext > capabilities > drop
+
+  ✗ Service does not restrict ingress sources [Medium Severity] [SNYK-CC-K8S-15] in Service
+    introduced by service > spec > loadBalancerSourceRanges
+
+  ✗ Container is running without liveness probe [Low Severity] [SNYK-CC-K8S-41] in Deployment
+    introduced by spec > template > spec > containers[snyk-employee-api] > livenessProbe
+
+  ✗ Container is running with writable root filesystem [Low Severity] [SNYK-CC-K8S-8] in Deployment
+    introduced by input > spec > template > spec > containers[snyk-employee-api] > securityContext > readOnlyRootFilesystem
+
+  ✗ Container is running without AppArmor profile [Low Severity] [SNYK-CC-K8S-32] in Deployment
+    introduced by metadata > annotations['container.apparmor.security.beta.kubernetes.io/snyk-employee-api']
+
+  ✗ Container is running without memory limit [Low Severity] [SNYK-CC-K8S-4] in Deployment
+    introduced by input > spec > template > spec > containers[snyk-employee-api] > resources > limits > memory
+
+  ✗ Container is running without cpu limit [Low Severity] [SNYK-CC-K8S-5] in Deployment
+    introduced by input > spec > template > spec > containers[snyk-employee-api] > resources > limits > cpu
+
+
+Organization:      pas.apicella-41p
+Type:              Kubernetes
+Target file:       ./Kubernetes/employee-K8s.yaml
+Project name:      Kubernetes
+Open source:       no
+Project path:      ./Kubernetes/employee-K8s.yaml
+
+Tested employee-K8s.yaml for known issues, found 9 issues
+```
+
+* Let's go ahead and fix the following
+
+```bash
+  ✗ Container is running without root user control [Medium Severity] [SNYK-CC-K8S-10] in Deployment
+    introduced by input > spec > template > spec > containers[snyk-employee-api] > securityContext > runAsNonRoot
+```
+
+* Edit the file "**./Kubernetes/employee-K8s.yaml**" and add "**securityContext > runAsNonRoot**" as shown below.
+
+```yaml
+    spec:
+      securityContext:
+        runAsNonRoot: true
+      containers:
+        - name: snyk-employee-api
+          image: pasapples/springbootemployee:jib
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+```
+
+* Run a scan of "**./Kubernetes/employee-K8s.yaml**" again to verify you have fixed that issue
+  
+```bash
+$ snyk iac test ./Kubernetes/employee-K8s.yaml
+
+Testing employee-K8s.yaml...
+
+
+Infrastructure as code issues:
+  ✗ Container is running without privilege escalation control [Medium Severity] [SNYK-CC-K8S-9] in Deployment
+    introduced by input > spec > template > spec > containers[snyk-employee-api] > securityContext > allowPrivilegeEscalation
+
+  ✗ Container does not drop all default capabilities [Medium Severity] [SNYK-CC-K8S-6] in Deployment
+    introduced by input > spec > template > spec > containers[snyk-employee-api] > securityContext > capabilities > drop
+
+  ✗ Service does not restrict ingress sources [Medium Severity] [SNYK-CC-K8S-15] in Service
+    introduced by service > spec > loadBalancerSourceRanges
+
+  ✗ Container is running without liveness probe [Low Severity] [SNYK-CC-K8S-41] in Deployment
+    introduced by spec > template > spec > containers[snyk-employee-api] > livenessProbe
+
+  ✗ Container is running with writable root filesystem [Low Severity] [SNYK-CC-K8S-8] in Deployment
+    introduced by input > spec > template > spec > containers[snyk-employee-api] > securityContext > readOnlyRootFilesystem
+
+  ✗ Container is running without AppArmor profile [Low Severity] [SNYK-CC-K8S-32] in Deployment
+    introduced by metadata > annotations['container.apparmor.security.beta.kubernetes.io/snyk-employee-api']
+
+  ✗ Container is running without memory limit [Low Severity] [SNYK-CC-K8S-4] in Deployment
+    introduced by input > spec > template > spec > containers[snyk-employee-api] > resources > limits > memory
+
+  ✗ Container is running without cpu limit [Low Severity] [SNYK-CC-K8S-5] in Deployment
+    introduced by input > spec > template > spec > containers[snyk-employee-api] > resources > limits > cpu
+
+
+Organization:      pas.apicella-41p
+Type:              Kubernetes
+Target file:       ./Kubernetes/employee-K8s.yaml
+Project name:      Kubernetes
+Open source:       no
+Project path:      ./Kubernetes/employee-K8s.yaml
+
+Tested employee-K8s.yaml for known issues, found 8 issues
+```
 
 ## Step 7 View Snyk IaC Rules
 
-TODO://
+Snyk IaC has a comprehensive set of security rules across AWS, Azure, GCP & Kubernetes with support for Terraform, Kubernetes, and Helm configuration formats. The details of these issues, their impact, and how to fix them are all built-in to Snyk IaC, so developers get feedback directly in their own tools. For reference, we have also documented the security rules that we support for each provider below, along with relevant benchmarks and authoritative third-party references
+
+Navigate to [Snyk Infrastructure as Code](https://snyk.io/security-rules)
 
 Thanks for attending and completing this workshop
 
