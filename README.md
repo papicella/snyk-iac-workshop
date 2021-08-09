@@ -73,7 +73,9 @@ Note: We will resolve some of these issues shortly for now just browse through s
 
 ## Step 4 Test using the Snyk CLI - Terraform Files
 
-In addition to the Snyk App UI we also have, snyk - CLI and build-time tool to find & fix known vulnerabilities in open-source dependencies. 
+Snyk tests and monitors your Terraform files from your source code repositories, guiding you with advice for how you can better secure your cloud environment--catching misconfigurations before you push to production and helping you to fix them
+
+In addition to the Snyk App UI we also have, snyk - CLI and build-time tool to find & fix known vulnerabilities in open-source dependencies and IaC configuration files. 
 
 * Authorize the Snyk CLI with your account as follows
 
@@ -170,7 +172,7 @@ Tested big_data.tf for known issues, found 11 issues
     introduced by google_sql_database_instance[master_instance] > settings > ip_configuration > require_ssl
 ```
 
-* Edit the file "**./terraform/big_data.tf**" as shown below and add ip_configuration setting
+* Edit the file "**./terraform/big_data.tf**" as shown below and add ip_configuration setting "**require_ssl = true**" as shown below.
 
 ```yaml
   settings {
@@ -243,13 +245,445 @@ That's one less issue to worry about and when our Cloud SQL database is provisio
 
 Go ahead and fix others if you have time and optionally commit your changes back to the GitHub repo if you like
 
+* To output the test format as JSON issue a command as follows. This provides more detailed information including links to issue references as well as the ability to upload the data into other system for reporting purposes.
+
+```json 
+$ snyk iac test ./terraform/big_data.tf --json
+{
+  "meta": {
+    "isPrivate": true,
+    "isLicensesEnabled": false,
+    "ignoreSettings": null,
+    "org": "pas.apicella-41p",
+    "projectId": "",
+    "policy": ""
+  },
+  "filesystemPolicy": false,
+  "vulnerabilities": [],
+  "dependencyCount": 0,
+  "licensesPolicy": null,
+  "ignoreSettings": null,
+  "targetFile": "./terraform/big_data.tf",
+  "projectName": "terraform",
+  "org": "pas.apicella-41p",
+  "policy": "",
+  "isPrivate": true,
+  "targetFilePath": "/Users/pasapicella/temp/snyk-iac-workshop/terraform/big_data.tf",
+  "packageManager": "terraformconfig",
+  "path": "./terraform/big_data.tf",
+  "projectType": "terraformconfig",
+  "ok": false,
+  "infrastructureAsCodeIssues": [
+    {
+      "severity": "high",
+      "resolve": "Set `settings.ip_configuration.ipv4_enabled` attribute to `false`",
+      "id": "SNYK-CC-TF-242",
+      "impact": "Database can be accessed remotely over public Internet",
+      "msg": "resource.google_sql_database_instance[master_instance].settings.ip_configuration.ipv4_enabled",
+      "subType": "Cloud SQL",
+      "issue": "Public IP will be assigned to the SQL database",
+      "publicId": "SNYK-CC-TF-242",
+      "title": "Public IP assigned to SQL database instance",
+      "references": [
+        "CIS Google Cloud Platform Foundation v1.1.0 - 6.6 Ensure that Cloud SQL database instances do not have public IPs",
+        "https://cloud.google.com/sql/docs/mysql/configure-private-ip",
+        "https://cloud.google.com/sql/docs/sqlserver/configure-ip"
+      ],
+      "isIgnored": false,
+      "iacDescription": {
+        "issue": "Public IP will be assigned to the SQL database",
+        "impact": "Database can be accessed remotely over public Internet",
+        "resolve": "Set `settings.ip_configuration.ipv4_enabled` attribute to `false`"
+      },
+      "lineNumber": 9,
+      "documentation": "https://snyk.io/security-rules/SNYK-CC-TF-242",
+      "path": [
+        "resource",
+        "google_sql_database_instance[master_instance]",
+        "settings",
+        "ip_configuration",
+        "ipv4_enabled"
+      ]
+    },
+    {
+      "severity": "low",
+      "resolve": "Set `settings.database_flags.name` attribute to `\"log_connections\"`, and `settings.database_flags.value` attribute to `\"on\"`",
+      "id": "SNYK-CC-GCP-288",
+      "impact": "Connection logs will not be available for troubleshooting or investigations",
+      "msg": "resource.google_sql_database_instance[master_instance].settings",
+      "subType": "Cloud SQL",
+      "issue": "PostgreSQL 'log_connections' is disabled",
+      "publicId": "SNYK-CC-GCP-288",
+      "title": "The log_connections setting is disabled on Postgresql DB",
+      "references": [
+        "CIS Google Cloud Platform Foundation v1.1.0 - 6.2.2 Ensure that the 'log_connections' database flag for Cloud SQL PostgreSQL instance is set to 'on'",
+        "https://cloud.google.com/sql/docs/postgres/flags"
+      ],
+      "isIgnored": false,
+      "iacDescription": {
+        "issue": "PostgreSQL 'log_connections' is disabled",
+        "impact": "Connection logs will not be available for troubleshooting or investigations",
+        "resolve": "Set `settings.database_flags.name` attribute to `\"log_connections\"`, and `settings.database_flags.value` attribute to `\"on\"`"
+      },
+      "lineNumber": 6,
+      "documentation": "https://snyk.io/security-rules/SNYK-CC-GCP-288",
+      "path": [
+        "resource",
+        "google_sql_database_instance[master_instance]",
+        "settings"
+      ]
+    },
+    {
+      "severity": "high",
+      "resolve": "Remove `allAuthenticatedUsers` and `allUsers` values from `access.special_group` attribute",
+      "id": "SNYK-CC-TF-236",
+      "impact": "Potentially anyone can access data in the dataset",
+      "msg": "resource.google_bigquery_dataset[dataset].access[0].special_group",
+      "subType": "BigQuery",
+      "issue": "BigQuery dataset is publicly accessible",
+      "publicId": "SNYK-CC-TF-236",
+      "title": "BigQuery dataset is publicly accessible",
+      "references": [
+        "CIS Google Cloud Platform Foundation v1.1.0 - 7.1 Ensure that BigQuery datasets are not anonymously or publicly accessible",
+        "https://cloud.google.com/bigquery/public-data"
+      ],
+      "isIgnored": false,
+      "iacDescription": {
+        "issue": "BigQuery dataset is publicly accessible",
+        "impact": "Potentially anyone can access data in the dataset",
+        "resolve": "Remove `allAuthenticatedUsers` and `allUsers` values from `access.special_group` attribute"
+      },
+      "lineNumber": 22,
+      "documentation": "https://snyk.io/security-rules/SNYK-CC-TF-236",
+      "path": [
+        "resource",
+        "google_bigquery_dataset[dataset]",
+        "access[0]",
+        "special_group"
+      ]
+    },
+    {
+      "severity": "low",
+      "resolve": "Set the `settings.database_flags.name` attribute to `\"log_disconnections\"` and `settings.database_flags.value` attribute to `\"on\"`",
+      "id": "SNYK-CC-GCP-289",
+      "impact": "Disconnection logs will not be available for troubleshooting or investigations",
+      "msg": "resource.google_sql_database_instance[master_instance].settings",
+      "subType": "Cloud SQL",
+      "issue": "PostgreSQL 'log_disconnections' is disabled",
+      "publicId": "SNYK-CC-GCP-289",
+      "title": "The log_disconnections setting is disabled on PostgreSQL DB",
+      "references": [
+        "CIS Google Cloud Platform Foundation v1.1.0 - 6.2.3 Ensure that the 'log_disconnections' database flag for Cloud SQL PostgreSQL instance is set to 'on'",
+        "https://cloud.google.com/sql/docs/postgres/flags"
+      ],
+      "isIgnored": false,
+      "iacDescription": {
+        "issue": "PostgreSQL 'log_disconnections' is disabled",
+        "impact": "Disconnection logs will not be available for troubleshooting or investigations",
+        "resolve": "Set the `settings.database_flags.name` attribute to `\"log_disconnections\"` and `settings.database_flags.value` attribute to `\"on\"`"
+      },
+      "lineNumber": 6,
+      "documentation": "https://snyk.io/security-rules/SNYK-CC-GCP-289",
+      "path": [
+        "resource",
+        "google_sql_database_instance[master_instance]",
+        "settings"
+      ]
+    },
+    {
+      "severity": "low",
+      "resolve": "Set the `settings.database_flags.name` attribute to `\"log_min_duration_statement\"` and `settings.database_flags.value` attribute to `-1`",
+      "id": "SNYK-CC-GCP-292",
+      "impact": "Some SQL statements may be logged and expose sensitive information",
+      "msg": "resource.google_sql_database_instance[master_instance].settings",
+      "subType": "Cloud SQL",
+      "issue": "PostgreSQL 'log_min_duration_statement' is not set to -1",
+      "publicId": "SNYK-CC-GCP-292",
+      "title": "SQL statements may be logged",
+      "references": [
+        "CIS Google Cloud Platform Foundation v1.1.0 - 6.2.7 Ensure that the 'log_min_duration_statement' database flag for Cloud SQL PostgreSQL instance is set to '-1' (disabled)",
+        "https://cloud.google.com/sql/docs/postgres/flags"
+      ],
+      "isIgnored": false,
+      "iacDescription": {
+        "issue": "PostgreSQL 'log_min_duration_statement' is not set to -1",
+        "impact": "Some SQL statements may be logged and expose sensitive information",
+        "resolve": "Set the `settings.database_flags.name` attribute to `\"log_min_duration_statement\"` and `settings.database_flags.value` attribute to `-1`"
+      },
+      "lineNumber": 6,
+      "documentation": "https://snyk.io/security-rules/SNYK-CC-GCP-292",
+      "path": [
+        "resource",
+        "google_sql_database_instance[master_instance]",
+        "settings"
+      ]
+    },
+    {
+      "severity": "low",
+      "resolve": "Set `settings.database_flags.name` attribute to `\"log_lock_waits\"`, and `settings.database_flags.value` attribute to `\"on\"`",
+      "id": "SNYK-CC-GCP-290",
+      "impact": "Deadlock timeouts logs will not be available for troubleshooting, or investigations",
+      "msg": "resource.google_sql_database_instance[master_instance].settings",
+      "subType": "Cloud SQL",
+      "issue": "PostgreSQL 'log_lock_waits' is disabled",
+      "publicId": "SNYK-CC-GCP-290",
+      "title": "The log_lock_waits setting is disabled on PostgreSQL DB",
+      "references": [
+        "CIS Google Cloud Platform Foundation v1.1.0 - 6.2.4 Ensure that the 'log_lock_waits' database flag for Cloud SQL PostgreSQL instance is set to 'on' ",
+        "https://cloud.google.com/sql/docs/postgres/flags"
+      ],
+      "isIgnored": false,
+      "iacDescription": {
+        "issue": "PostgreSQL 'log_lock_waits' is disabled",
+        "impact": "Deadlock timeouts logs will not be available for troubleshooting, or investigations",
+        "resolve": "Set `settings.database_flags.name` attribute to `\"log_lock_waits\"`, and `settings.database_flags.value` attribute to `\"on\"`"
+      },
+      "lineNumber": 6,
+      "documentation": "https://snyk.io/security-rules/SNYK-CC-GCP-290",
+      "path": [
+        "resource",
+        "google_sql_database_instance[master_instance]",
+        "settings"
+      ]
+    },
+    {
+      "severity": "medium",
+      "resolve": "Set `settings.backup_configuration.enabled` attribute to `true`",
+      "id": "SNYK-CC-GCP-283",
+      "impact": "Data will not be recoverable in the event of failure or malicious attack",
+      "msg": "resource.google_sql_database_instance[master_instance].settings.backup_configuration",
+      "subType": "Cloud SQL",
+      "issue": "Automated backup is explicitly disabled",
+      "publicId": "SNYK-CC-GCP-283",
+      "title": "Cloud SQL instance backup disabled",
+      "references": [
+        "CIS Google Cloud Platform Foundation v1.1.0 - 6.7 Ensure that Cloud SQL database instances are configured with automated backups",
+        "https://cloud.google.com/sql/docs/sqlserver/backup-recovery/backups"
+      ],
+      "isIgnored": false,
+      "iacDescription": {
+        "issue": "Automated backup is explicitly disabled",
+        "impact": "Data will not be recoverable in the event of failure or malicious attack",
+        "resolve": "Set `settings.backup_configuration.enabled` attribute to `true`"
+      },
+      "lineNumber": 16,
+      "documentation": "https://snyk.io/security-rules/SNYK-CC-GCP-283",
+      "path": [
+        "resource",
+        "google_sql_database_instance[master_instance]",
+        "settings",
+        "backup_configuration"
+      ]
+    },
+    {
+      "severity": "low",
+      "resolve": "Set `settings.database_flags.name` attribute to `\"log_checkpoints\"`, and `settings.database_flags.value` attribute to `\"on\"`",
+      "id": "SNYK-CC-GCP-287",
+      "impact": "Verbose logging information of database will not be collected",
+      "msg": "resource.google_sql_database_instance[master_instance].settings",
+      "subType": "Cloud SQL",
+      "issue": "PostgreSQL 'log_checkpoints' is disabled",
+      "publicId": "SNYK-CC-GCP-287",
+      "title": "The log_checkpoints is disabled on PostgreSQL DB",
+      "references": [
+        "CIS Google Cloud Platform Foundation v1.1.0 - 6.2.1 Ensure that the 'log_checkpoints' database flag for Cloud SQL PostgreSQL instance is set to 'on'",
+        "https://cloud.google.com/sql/docs/postgres/flags"
+      ],
+      "isIgnored": false,
+      "iacDescription": {
+        "issue": "PostgreSQL 'log_checkpoints' is disabled",
+        "impact": "Verbose logging information of database will not be collected",
+        "resolve": "Set `settings.database_flags.name` attribute to `\"log_checkpoints\"`, and `settings.database_flags.value` attribute to `\"on\"`"
+      },
+      "lineNumber": 6,
+      "documentation": "https://snyk.io/security-rules/SNYK-CC-GCP-287",
+      "path": [
+        "resource",
+        "google_sql_database_instance[master_instance]",
+        "settings"
+      ]
+    },
+    {
+      "severity": "low",
+      "resolve": "Set the `settings.database_flags.name` attribute to `\"log_temp_files\"`, and `settings.database_flags.value` attribute to `0`",
+      "id": "SNYK-CC-GCP-291",
+      "impact": "Some temporary files information may not be logged, which may impact ability to identify potential performance issues",
+      "msg": "resource.google_sql_database_instance[master_instance].settings",
+      "subType": "Cloud SQL",
+      "issue": "PostgreSQL 'log_temp_files' is not set to 0",
+      "publicId": "SNYK-CC-GCP-291",
+      "title": "Temporary file information is not logged",
+      "references": [
+        "CIS Google Cloud Platform Foundation v1.1.0 - 6.2.6 Ensure that the 'log_temp_files' database flag for Cloud SQL PostgreSQL instance is set to '0'",
+        "https://cloud.google.com/sql/docs/postgres/flags"
+      ],
+      "isIgnored": false,
+      "iacDescription": {
+        "issue": "PostgreSQL 'log_temp_files' is not set to 0",
+        "impact": "Some temporary files information may not be logged, which may impact ability to identify potential performance issues",
+        "resolve": "Set the `settings.database_flags.name` attribute to `\"log_temp_files\"`, and `settings.database_flags.value` attribute to `0`"
+      },
+      "lineNumber": 6,
+      "documentation": "https://snyk.io/security-rules/SNYK-CC-GCP-291",
+      "path": [
+        "resource",
+        "google_sql_database_instance[master_instance]",
+        "settings"
+      ]
+    },
+    {
+      "severity": "high",
+      "resolve": "Set `settings.ip_configuration.authorized_networks` attribute to specific value e.g. `192.168.0.0/24`",
+      "id": "SNYK-CC-TF-235",
+      "impact": "Potentially anyone can establish network connectivity to the database instance",
+      "msg": "resource.google_sql_database_instance[master_instance].settings.ip_configuration.authorized_networks[0]",
+      "subType": "Cloud SQL",
+      "issue": "Cloud SQL database instance allows public access",
+      "publicId": "SNYK-CC-TF-235",
+      "title": "Cloud SQL instance is publicly accessible",
+      "references": [
+        "CIS Google Cloud Platform Foundation v1.1.0 - 6.5 Ensure that Cloud SQL database instances are not open to the world",
+        "https://cloud.google.com/sql/docs/mysql/configure-ip",
+        "https://cloud.google.com/sql/docs/mysql/configure-private-ip"
+      ],
+      "isIgnored": false,
+      "iacDescription": {
+        "issue": "Cloud SQL database instance allows public access",
+        "impact": "Potentially anyone can establish network connectivity to the database instance",
+        "resolve": "Set `settings.ip_configuration.authorized_networks` attribute to specific value e.g. `192.168.0.0/24`"
+      },
+      "lineNumber": 8,
+      "documentation": "https://snyk.io/security-rules/SNYK-CC-TF-235",
+      "path": [
+        "resource",
+        "google_sql_database_instance[master_instance]",
+        "settings",
+        "ip_configuration",
+        "authorized_networks[0]"
+      ]
+    }
+  ]
+}
+```
+
 ## Step 5 Test using the Snyk CLI - AWS CloudFormation files
 
-TODO://
+Snyk tests and monitors CloudFormation files from source code repositories. It gives advice on how to better secure cloud environments by catching misconfigurations before they are pushed to production along with assistance on how best to fix them
+
+Inside the "**CloudFormation**" Folder run a scan as follows. This will pick up all the IaC config files which exist in this directory in our case we have two files
+
+```bash
+$ snyk iac test ./CloudFormation/
+
+Testing fargate-service.yml...
+
+
+Infrastructure as code issues:
+  ✗ S3 block public policy control is disabled [High Severity] [SNYK-CC-TF-96] in S3
+    introduced by Resources[CodePipelineArtifactBucket] > Properties > PublicAccessBlockConfiguration > BlockPublicPolicy
+
+  ✗ S3 ignore public ACLs control is disabled [High Severity] [SNYK-CC-TF-97] in S3
+    introduced by Resources[CodePipelineArtifactBucket] > Properties > PublicAccessBlockConfiguration > IgnorePublicAcls
+
+  ✗ S3 block public ACLs control is disabled [High Severity] [SNYK-CC-TF-95] in S3
+    introduced by Resources[CodePipelineArtifactBucket] > Properties > PublicAccessBlockConfiguration > BlockPublicAcls
+
+  ✗ S3 restrict public bucket control is disabled [High Severity] [SNYK-CC-TF-98] in S3
+    introduced by Resources[CodePipelineArtifactBucket] > Properties > PublicAccessBlockConfiguration > RestrictPublicBuckets
+
+  ✗ ECR image scanning is disabled [Low Severity] [SNYK-CC-TF-61] in ECR
+    introduced by Resources[EcrDockerRepository] > Properties > ImageScanningConfiguration
+
+  ✗ S3 bucket versioning disabled [Low Severity] [SNYK-CC-TF-124] in S3
+    introduced by Resources[CodePipelineArtifactBucket] > Properties > VersioningConfiguration > Status
+
+  ✗ CloudWatch log group not encrypted with managed key [Low Severity] [SNYK-CC-AWS-415] in CloudWatch
+    introduced by Resources[LogGroup] > Properties > KmsKeyId
+
+  ✗ ECR repository is not encrypted with customer managed key [Low Severity] [SNYK-CC-AWS-418] in ECR
+    introduced by Resources[EcrDockerRepository] > Properties > EncryptionConfiguration > KmsKey
+
+  ✗ ECR Registry allows mutable tags [Low Severity] [SNYK-CC-TF-126] in ECR
+    introduced by Resources[EcrDockerRepository] > Properties > ImageTagMutability
+
+
+Organization:      pas.apicella-41p
+Type:              CloudFormation
+Target file:       fargate-service.yml
+Project name:      CloudFormation
+Open source:       no
+Project path:      ./CloudFormation/
+
+Tested fargate-service.yml for known issues, found 9 issues
+
+-------------------------------------------------------
+
+Testing vpc.json...
+
+
+Infrastructure as code issues:
+  ✗ Security Group allows open ingress [Medium Severity] [SNYK-CC-TF-1] in VPC
+    introduced by Resources > ELBSecurityGroup > Properties > SecurityGroupIngress[0]
+
+  ✗ AWS Security Group allows open egress [Low Severity] [SNYK-CC-TF-73] in VPC
+    introduced by Resources[BastionSecurityGroup] > Properties > SecurityGroupEgress[1] > CidrIp
+
+  ✗ Rule allows open egress [Low Severity] [SNYK-CC-TF-72] in VPC
+    introduced by Resources[BastionSecurityGroup] > Properties > SecurityGroupEgress[1]
+
+  ✗ AWS Security Group allows open egress [Low Severity] [SNYK-CC-TF-73] in VPC
+    introduced by Resources[BastionSecurityGroup] > Properties > SecurityGroupEgress[2] > CidrIp
+
+  ✗ Rule allows open egress [Low Severity] [SNYK-CC-TF-72] in VPC
+    introduced by Resources[BastionSecurityGroup] > Properties > SecurityGroupEgress[2]
+
+  ✗ AWS Security Group allows open egress [Low Severity] [SNYK-CC-TF-73] in VPC
+    introduced by Resources[DbSecurityGroup] > Properties > SecurityGroupEgress[1] > CidrIp
+
+  ✗ Rule allows open egress [Low Severity] [SNYK-CC-TF-72] in VPC
+    introduced by Resources[DbSecurityGroup] > Properties > SecurityGroupEgress[0]
+
+  ✗ AWS Security Group allows open egress [Low Severity] [SNYK-CC-TF-73] in VPC
+    introduced by Resources[BastionSecurityGroup] > Properties > SecurityGroupEgress[0] > CidrIp
+
+  ✗ Rule allows open egress [Low Severity] [SNYK-CC-TF-72] in VPC
+    introduced by Resources[BastionSecurityGroup] > Properties > SecurityGroupEgress[0]
+
+  ✗ Rule allows open egress [Low Severity] [SNYK-CC-TF-72] in VPC
+    introduced by Resources[DbSecurityGroup] > Properties > SecurityGroupEgress[1]
+
+  ✗ AWS Security Group allows open egress [Low Severity] [SNYK-CC-TF-73] in VPC
+    introduced by Resources[DbSecurityGroup] > Properties > SecurityGroupEgress[0] > CidrIp
+
+
+Organization:      pas.apicella-41p
+Type:              CloudFormation
+Target file:       vpc.json
+Project name:      CloudFormation
+Open source:       no
+Project path:      ./CloudFormation/
+
+Tested vpc.json for known issues, found 11 issues
+
+
+Tested 2 projects, 2 contained issues.
+```
+
+Go ahead and fix others if you have time and optionally commit your changes back to the GitHub repo if you like.
+
+* To output the test format as JSON issue a command as follows. This provides more detailed information including links to issue references as well as the ability to upload the data into other system for reporting purposes.
+
+```bash
+$ snyk iac test ./CloudFormation --json
+```
+
+For more information on AWS Cloud Formation scanning with Snyk see the following blog post
+[Scan for AWS CloudFormation misconfigurations with Snyk IaC](https://snyk.io/blog/scan-aws-cloudformation-misconfigurations-snyk-iac/)
 
 ## Step 6 Test using the Snyk CLI - Kubernetes YAML files
 
-TODO://
+Snyk tests and monitors Kubernetes configurations stored in your source code repositories and provides information, tips, and tricks to better secure a Kubernetes environment--catching misconfigurations before they are pushed to production as well as providing fixes for vulnerabilities
+
 
 ## Step 7 View Snyk IaC Rules
 
