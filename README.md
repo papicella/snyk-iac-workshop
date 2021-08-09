@@ -6,10 +6,10 @@ Developer-focused infrastructure as code security with Snyk allows you to test a
 
 In this **hands-on** workshop we will achieve the follow:
 
-* [Step 1 Fork a GitHub IaC repository](step-1-fork-a-github-iac-repository)
-* [Step 2 Configure GitHub Integration](step-2-configure-github-integration) 
-* [Step 3 Add project to find vulnerabilities](step-3-add-project-to-find-vulnerabilities)
-* [Step 4 Test using the Snyk CLI - Terraform Files](step-4-test-using-the-snyk-cli---terraform-files)
+* [Step 1 Fork a GitHub IaC repository](#step-1-fork-a-github-iac-repository)
+* [Step 2 Configure GitHub Integration](#step-2-configure-github-integration) 
+* [Step 3 Add project to find vulnerabilities](#step-3-add-project-to-find-vulnerabilities)
+* [Step 4 Test using the Snyk CLI - Terraform Files](#step-4-test-using-the-snyk-cli---terraform-files)
 * [Step 5 Test using the Snyk CLI - AWS CloudFormation files]()
 * [Step 6 Test using the Snyk CLI - Kubernetes YAML files]()
 * [Step 7 View Snyk IaC Rules]()
