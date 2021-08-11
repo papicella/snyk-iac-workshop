@@ -584,9 +584,18 @@ If you have written a custom terraform module and are referencing it in your dep
 
 This means the Terraform plan output provides a complete artefact to be scanned from a security perspective. 
 
+_Note: For this workshop we won't be doing a terraform plan scan but it's important to know we can do that_
+
 ![alt tag](https://i.ibb.co/gDLFYcH/snyk-iac-6.png)
 
 ## Step 5 Test using the Snyk CLI - AWS CloudFormation files
+
+_Note: Please ensure you have the latest version of the Snyk CLI installed a version equal to or greater than the version below_
+
+```bash
+$ snyk --version
+1.675.0
+```
 
 Snyk tests and monitors CloudFormation files from source code repositories. It gives advice on how to better secure cloud environments by catching misconfigurations before they are pushed to production along with assistance on how best to fix them
 
