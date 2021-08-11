@@ -81,6 +81,13 @@ Snyk tests and monitors your Terraform files from your source code repositories,
 
 In addition to the Snyk App UI we also have, snyk - CLI and build-time tool to find & fix known vulnerabilities in open-source dependencies and IaC configuration files. 
 
+_Note: Please ensure you have the latest version of the Snyk CLI installed a version equal to or greater than the version below_
+
+```bash
+$ snyk --version
+1.675.0
+```
+
 * Authorize the Snyk CLI with your account as follows
 
 ```bash
