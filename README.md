@@ -606,7 +606,7 @@ $ snyk --version
 
 Snyk tests and monitors CloudFormation files from source code repositories. It gives advice on how to better secure cloud environments by catching misconfigurations before they are pushed to production along with assistance on how best to fix them
 
-Inside the "**CloudFormation**" Folder run a scan as follows. This will pick up all the IaC config files which exist in this directory in our case we have two files
+* Inside the "**CloudFormation**" Folder run a scan as follows. This will pick up all the IaC config files which exist in this directory in our case we have two files
 
 ```bash
 $ snyk iac test ./CloudFormation/
