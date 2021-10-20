@@ -583,7 +583,7 @@ $ snyk iac test ./terraform/big_data.tf --json
 
   $ terraform plan identifies the changes that need to be made to your target environment in order to match your desired state.
 
-  As part of this planning stage, all variables and Terraform Modules that are used in your targeted terraform deployment are taken into consideration.
+_Note: terraform plan identifies the changes that need to be made to your target environment in order to match your desired state._
 
   If you have written a custom terraform module and are referencing it in your deployment, then it will be included in the terraform plan output and scanned   accordingly.
 
