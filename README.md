@@ -583,7 +583,7 @@ $ snyk iac test ./terraform/big_data.tf --json
 
 Terraform Plan is the step run between writing your configuration files and deploying those changes.
 
-$ terraform plan identifies the changes that need to be made to your target environment in order to match your desired state.
+_Note: terraform plan identifies the changes that need to be made to your target environment in order to match your desired state._
 
 As part of this planning stage, all variables and Terraform Modules that are used in your targeted terraform deployment are taken into consideration.
 
