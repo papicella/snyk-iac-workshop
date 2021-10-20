@@ -577,23 +577,21 @@ $ snyk iac test ./terraform/big_data.tf --json
 }
 ```
 
-* With Snyk Infrastructure as Code, you can scan both your static configuration files and Terraform Plan output using the CLI
+* With Snyk Infrastructure as Code, you can scan both your static configuration files and Terraform Plan output using the CLI, [Test your Terraform files with our CLI tool](https://support.snyk.io/hc/en-us/articles/360013723877-Test-your-Terraform-files-with-our-CLI-tool).
 
-[Test your Terraform files with our CLI tool](https://support.snyk.io/hc/en-us/articles/360013723877-Test-your-Terraform-files-with-our-CLI-tool)
+  Terraform Plan is the step run between writing your configuration files and deploying those changes.
 
-Terraform Plan is the step run between writing your configuration files and deploying those changes.
+  $ terraform plan identifies the changes that need to be made to your target environment in order to match your desired state.
 
-$ terraform plan identifies the changes that need to be made to your target environment in order to match your desired state.
+  As part of this planning stage, all variables and Terraform Modules that are used in your targeted terraform deployment are taken into consideration.
 
-As part of this planning stage, all variables and Terraform Modules that are used in your targeted terraform deployment are taken into consideration.
+  If you have written a custom terraform module and are referencing it in your deployment, then it will be included in the terraform plan output and scanned   accordingly.
 
-If you have written a custom terraform module and are referencing it in your deployment, then it will be included in the terraform plan output and scanned accordingly.
+  This means the Terraform plan output provides a complete artefact to be scanned from a security perspective. 
 
-This means the Terraform plan output provides a complete artefact to be scanned from a security perspective. 
+  _Note: For this workshop we won't be doing a terraform plan scan but it's important to know we can do that_
 
-_Note: For this workshop we won't be doing a terraform plan scan but it's important to know we can do that_
-
-![alt tag](https://i.ibb.co/gDLFYcH/snyk-iac-6.png)
+  ![alt tag](https://i.ibb.co/gDLFYcH/snyk-iac-6.png)
 
 ## Step 5 Test using the Snyk CLI - AWS CloudFormation files
 
