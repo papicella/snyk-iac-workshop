@@ -65,7 +65,7 @@ __Note: Once complete you should see various IaC scans as shown below_
 
 ![alt tag](https://i.ibb.co/DKY911V/snyk-iac-3.png)
 
-For each Vulnerability, Snyk displays the following ordered by our Line no:
+For each Vulnerability, Snyk displays the following ordered by Line no:
 
 1. Each Vulnerability grouped by line no and severity 
 1. Each Vulnerability links to the Snyk policy it was defined against including the path to the issue, what the issue is, the impact and how to resolve it
@@ -81,7 +81,7 @@ Snyk tests and monitors your Terraform files from your source code repositories,
 
 In addition to the Snyk App UI we also have, snyk - CLI and build-time tool to find & fix known vulnerabilities in open-source dependencies and IaC configuration files. 
 
-_Note: Please ensure you have the latest version of the Snyk CLI installed a version equal to or greater than the version below_
+_Note: Please ensure you have the latest version of the Snyk CLI installed a version equal to or greater than the version below. https://docs.snyk.io/features/snyk-cli/install-the-snyk-cli_
 
 ```bash
 $ snyk --version
@@ -593,7 +593,7 @@ _Note: For this workshop we won't be doing a terraform plan scan but it's import
 
 ## Step 5 Test using the Snyk CLI - AWS CloudFormation files
 
-_Note: Please ensure you have the latest version of the Snyk CLI installed a version equal to or greater than the version below_
+_Note: Please ensure you have the latest version of the Snyk CLI installed a version equal to or greater than the version below. https://docs.snyk.io/features/snyk-cli/install-the-snyk-cli_
 
 ```bash
 $ snyk --version
@@ -844,7 +844,7 @@ $ snyk iac test ./Kubernetes/employee-K8s.yaml --json
 
 ## Step 7 View Snyk IaC Rules
 
-Snyk IaC has a comprehensive set of security rules across AWS, Azure, GCP & Kubernetes with support for Terraform, Kubernetes, and Helm configuration formats. The details of these issues, their impact, and how to fix them are all built-in to Snyk IaC, so developers get feedback directly in their own tools. For reference, we have also documented the security rules that we support for each provider below, along with relevant benchmarks and authoritative third-party references
+Snyk IaC has a comprehensive set of security rules across AWS, Azure, GCP & Kubernetes with support for Terraform, CloudFormation, Kubernetes, and Helm configuration formats. The details of these issues, their impact, and how to fix them are all built-in to Snyk IaC, so developers get feedback directly in their own tools. For reference, we have also documented the security rules that we support for each provider below, along with relevant benchmarks and authoritative third-party references
 
 Navigate to [Snyk Infrastructure as Code](https://snyk.io/security-rules)
 
